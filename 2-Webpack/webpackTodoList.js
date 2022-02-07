@@ -108,15 +108,32 @@
     
     
     function addTodo(todoText) {
-        const todoListArr = []
+        // save new todo in local storage
+        saveTodoToLocalStorage(todoText)
+        const todoListArr = loadTodoList()
         const todoId = todoListArr.length
-
+        
         // here we need to add a ul
         let ul = document.getElementById('todo-list');
         let li = createTodoItem(todoText, todoId)    
         ul.appendChild(li)
     }
 
+    function loadTodoList() {
+        let todoListArr = []
+        let todoListFromLocalStorage = localStorage.getItem("My Todo List");
+        if (todoListFromLocalStorage == null) {
+            todoListArr = []
+        } else {
+            todoListArr = JSON.parse(todoListFromLocalStorage);
+        }
+        return todoList
+    }
+    function saveTodoToLocalStorage(todo) {
+        let todos = loadTodoList()
+        todos.push(todo);
+        localStorage.setItem("My Todo List", JSON.stringify(todos))
+    }
         const todoList = []
         document.getElementById('todo-button').addEventListener('click', handleSubmitTodo);
       })();
