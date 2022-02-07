@@ -1,12 +1,13 @@
 const todoListNameLocalStorage = "My Todo List";
 
 (function() {
-    const createCheck = (todoId) => {
+    const createCheck = (todo) => {
         let checkDiv = document.createElement('input');
         checkDiv.type = 'checkbox'
         const checkDivClassName = "checked"
+        checkDiv.checked = todo.checked
         checkDiv.classList.add(checkDivClassName)
-        checkDiv.addEventListener('click', function() {handleCheckedClick(todoId)})
+        checkDiv.addEventListener('click', function() {handleCheckedClick(todo.todoId)})
         return checkDiv
     }
     
@@ -59,6 +60,10 @@ const todoListNameLocalStorage = "My Todo List";
     function handleCheckedClick(todoId) {
         const todo = document.getElementById(`todo-item-${todoId}`)
         todo.classList.toggle('completed')
+        let todos = loadTodoListFromLS()
+        const myTodo = todos.find(todo => todo.todoId === todoId)
+        todos.find(todo => todo.todoId === todoId).checked = !myTodo.checked;
+        localStorage.setItem(todoListNameLocalStorage, JSON.stringify(todos))
     }
     
     function handleSubmitTodo(e) {
@@ -97,9 +102,10 @@ const todoListNameLocalStorage = "My Todo List";
         todoDiv.disabled = true
         todoDiv.id = (`todo-item-${todoId}`)
         todoDiv.value = todoText
+        todo.checked ? todoDiv.classList.toggle('completed') : ''
         const deleteButton = createButton('delete', todoId)
         const editButton = createButton('edit', todoId)
-        const checked = createCheck(todoId);
+        const checked = createCheck(todo);
     
         // add content to li
         li.appendChild(checked)
@@ -153,7 +159,6 @@ const todoListNameLocalStorage = "My Todo List";
 
     function getTodos() {
         let todoListArr = loadTodoListFromLS()
-        // const todoId = todoListArr.length
         todoListArr.forEach((todo) => {
             // here we need to add a ul
             createTodoListElementTag(todo)
