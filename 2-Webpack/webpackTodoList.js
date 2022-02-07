@@ -110,17 +110,14 @@
     function addTodo(todoText) {
         // save new todo in local storage
         saveTodoToLocalStorage(todoText)
-        const todoListArr = loadTodoList()
+        const todoListArr = loadTodoListFromLS()
         const todoId = todoListArr.length
         
         // here we need to add a ul
-        let ul = document.getElementById('todo-list');
-        let li = createTodoItem(todoText, todoId)    
-        ul.appendChild(li)
+        createTodoListElementTag(todoText, todoId)
     }
 
-    function loadTodoList() {
-        debugger;
+    function loadTodoListFromLS() {
         let todoListArr = []
         let todoListFromLocalStorage = localStorage.getItem("My Todo List");
         if (todoListFromLocalStorage == null) {
@@ -131,11 +128,26 @@
         return todoListArr
     }
     function saveTodoToLocalStorage(todo) {
-        let todos = loadTodoList()
+        let todos = loadTodoListFromLS()
         todos.push(todo);
         localStorage.setItem("My Todo List", JSON.stringify(todos))
     }
-        const todoList = []
+
+    function getTodos() {
+        let todoListArr = loadTodoListFromLS()
+        const todoId = todoListArr.length
+        todoListArr.forEach((todoText, todoId) => {
+            // here we need to add a ul
+            createTodoListElementTag(todoText, todoId)
+        });
+    }
+
+    function createTodoListElementTag(todoText, todoId){
+        let ul = document.getElementById('todo-list');
+        let li = createTodoItem(todoText, todoId)    
+        ul.appendChild(li)
+    }
+        getTodos()
         document.getElementById('todo-button').addEventListener('click', handleSubmitTodo);
       })();
 
