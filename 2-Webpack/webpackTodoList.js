@@ -89,7 +89,8 @@ const todoListNameLocalStorage = "My Todo List";
         todoItem.disabled = !todoItem.disabled
     }
     
-    function createTodoItem(todoText, todoId) {
+    function createTodoItem(todo) {
+        const {todoText, todoId} = todo; 
         let li = document.createElement('li')
         let todoDiv = document.createElement('input');
         todoDiv.classList.add('todo-item');
@@ -111,14 +112,13 @@ const todoListNameLocalStorage = "My Todo List";
     }
     
     function addTodo(todoText) {
-        
         const todoListArr = loadTodoListFromLS()
         const todoId = todoListArr.length
-        
+        const newTodo = {"todoText": todoText, "todoId": todoId, "checked": false}
         // here we need to add a ul
-        createTodoListElementTag(todoText, todoId)
+        createTodoListElementTag(newTodo)
         // save new todo in local storage
-        saveTodoToLocalStorage(todoText, todoId)
+        saveTodoToLocalStorage(newTodo)
     }
 
     function loadTodoListFromLS() {
@@ -132,9 +132,9 @@ const todoListNameLocalStorage = "My Todo List";
         return todoListArr
     }
 
-    function saveTodoToLocalStorage(todo, todoId) {
+    function saveTodoToLocalStorage(newTodo) {
         let todos = loadTodoListFromLS()
-        todos.push({"todoText": todo, "todoId": todoId});
+        todos.push(newTodo);
         localStorage.setItem(todoListNameLocalStorage, JSON.stringify(todos))
     }  
 
@@ -153,17 +153,16 @@ const todoListNameLocalStorage = "My Todo List";
 
     function getTodos() {
         let todoListArr = loadTodoListFromLS()
-        const todoId = todoListArr.length
+        // const todoId = todoListArr.length
         todoListArr.forEach((todo) => {
             // here we need to add a ul
-            const {todoText, todoId} = todo; 
-            createTodoListElementTag(todoText, todoId)
+            createTodoListElementTag(todo)
         });
     }
 
-    function createTodoListElementTag(todoText, todoId){
+    function createTodoListElementTag(todo){
         let ul = document.getElementById('todo-list');
-        let li = createTodoItem(todoText, todoId)    
+        let li = createTodoItem(todo)    
         ul.appendChild(li)
     }
         getTodos()
