@@ -120,6 +120,7 @@
     }
 
     function loadTodoList() {
+        debugger;
         let todoListArr = []
         let todoListFromLocalStorage = localStorage.getItem("My Todo List");
         if (todoListFromLocalStorage == null) {
@@ -127,7 +128,7 @@
         } else {
             todoListArr = JSON.parse(todoListFromLocalStorage);
         }
-        return todoList
+        return todoListArr
     }
     function saveTodoToLocalStorage(todo) {
         let todos = loadTodoList()
