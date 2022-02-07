@@ -1,3 +1,5 @@
+const todoListNameLocalStorage = "My Todo List";
+
 (function() {
     const createCheck = (todoId) => {
         let checkDiv = document.createElement('input');
@@ -76,9 +78,10 @@
     function handleDeleteTodo(todoId) {
         // loop over all
         let li = document.getElementById(`todo-list-item-${todoId}`)
+        removeTodoFromLocalStorage(todoId)
         li.remove()
     }
-    1
+    
     function handleEditTodo(todoId){
         let li = document.getElementById(`todo-list-item-${todoId}`)
         let todoItem = document.getElementById(`todo-item-${todoId}`)
@@ -106,20 +109,20 @@
         return li
     }
     
-    
     function addTodo(todoText) {
-        // save new todo in local storage
-        saveTodoToLocalStorage(todoText)
+        
         const todoListArr = loadTodoListFromLS()
         const todoId = todoListArr.length
         
         // here we need to add a ul
         createTodoListElementTag(todoText, todoId)
+        // save new todo in local storage
+        saveTodoToLocalStorage(todoText, todoId)
     }
 
     function loadTodoListFromLS() {
         let todoListArr = []
-        let todoListFromLocalStorage = localStorage.getItem("My Todo List");
+        let todoListFromLocalStorage = localStorage.getItem(todoListNameLocalStorage);
         if (todoListFromLocalStorage == null) {
             todoListArr = []
         } else {
@@ -127,17 +130,24 @@
         }
         return todoListArr
     }
-    function saveTodoToLocalStorage(todo) {
+    function saveTodoToLocalStorage(todo, todoId) {
         let todos = loadTodoListFromLS()
-        todos.push(todo);
-        localStorage.setItem("My Todo List", JSON.stringify(todos))
+        todos.push({"todoText": todo, "todoId": todoId});
+        localStorage.setItem(todoListNameLocalStorage, JSON.stringify(todos))
+    }  
+    function removeTodoFromLocalStorage(todoId){
+        
+        let todos = loadTodoListFromLS()
+        todos = todos.filter(todo => todo.todoId != todoId)
+        localStorage.setItem(todoListNameLocalStorage, JSON.stringify(todos))
     }
 
     function getTodos() {
         let todoListArr = loadTodoListFromLS()
         const todoId = todoListArr.length
-        todoListArr.forEach((todoText, todoId) => {
+        todoListArr.forEach((todo) => {
             // here we need to add a ul
+            const {todoText, todoId} = todo; 
             createTodoListElementTag(todoText, todoId)
         });
     }
