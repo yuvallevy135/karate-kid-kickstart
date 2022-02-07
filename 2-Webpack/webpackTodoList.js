@@ -85,6 +85,7 @@ const todoListNameLocalStorage = "My Todo List";
     function handleEditTodo(todoId){
         let li = document.getElementById(`todo-list-item-${todoId}`)
         let todoItem = document.getElementById(`todo-item-${todoId}`)
+        editTodoToLocalStorage(todoId, todoItem)
         todoItem.disabled = !todoItem.disabled
     }
     
@@ -130,15 +131,23 @@ const todoListNameLocalStorage = "My Todo List";
         }
         return todoListArr
     }
+
     function saveTodoToLocalStorage(todo, todoId) {
         let todos = loadTodoListFromLS()
         todos.push({"todoText": todo, "todoId": todoId});
         localStorage.setItem(todoListNameLocalStorage, JSON.stringify(todos))
     }  
+
     function removeTodoFromLocalStorage(todoId){
         
         let todos = loadTodoListFromLS()
         todos = todos.filter(todo => todo.todoId != todoId)
+        localStorage.setItem(todoListNameLocalStorage, JSON.stringify(todos))
+    }
+
+    function editTodoToLocalStorage(todoId, todoItem){
+        let todos = loadTodoListFromLS()
+        todos.find(todo => todo.todoId === todoId).todoText = todoItem.value
         localStorage.setItem(todoListNameLocalStorage, JSON.stringify(todos))
     }
 
