@@ -28,7 +28,7 @@ module.exports = {
         }),
         new CopyPlugin({
             patterns: [
-                { from: "**/**/*.css", to: path.resolve(__dirname, "dist/styles/styles.css")}
+                { from: "src/**/*.css", to: path.resolve(__dirname, "dist/styles/styles.css")}
             ]
         })
     ],
