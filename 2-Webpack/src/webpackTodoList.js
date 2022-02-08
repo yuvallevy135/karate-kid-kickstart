@@ -36,7 +36,7 @@ const todoListNameLocalStorage = "My Todo List";
                 iconClassName = "fa-check";
                 iconId = `icon-check-${id}`
             default:
-                // none
+                
         }
         icon.className = iconClassName;
         icon.id = iconId
@@ -53,7 +53,7 @@ const todoListNameLocalStorage = "My Todo List";
                 handleEditTodo(todoId)
                 break;
             default:
-                // none
+                
         }
     }   
     
@@ -71,17 +71,17 @@ const todoListNameLocalStorage = "My Todo List";
     
         let input = document.getElementById('new-task-input');
         if (input.value.trim() != '') {
-            // add the todo
+            
             addTodo(input.value)
         }else {
             alert("You didnt enter any Todo")
         }
-        // reset the input text
+        
         input.value = '';
     }
     
     function handleDeleteTodo(todoId) {
-        // loop over all
+        
         let li = document.getElementById(`todo-list-item-${todoId}`)
         removeTodoFromLocalStorage(todoId)
         li.remove()
@@ -107,7 +107,6 @@ const todoListNameLocalStorage = "My Todo List";
         const editButton = createButton('edit', todoId)
         const checked = createCheck(todo);
     
-        // add content to li
         li.appendChild(checked)
         li.appendChild(todoDiv)
         li.appendChild(deleteButton)
@@ -121,9 +120,8 @@ const todoListNameLocalStorage = "My Todo List";
         const todoListArr = loadTodoListFromLS()
         const todoId = todoListArr.length
         const newTodo = {"todoText": todoText, "todoId": todoId, "checked": false}
-        // here we need to add a ul
+        
         createTodoListElementTag(newTodo)
-        // save new todo in local storage
         saveTodoToLocalStorage(newTodo)
     }
 
@@ -157,10 +155,10 @@ const todoListNameLocalStorage = "My Todo List";
         localStorage.setItem(todoListNameLocalStorage, JSON.stringify(todos))
     }
 
-    function getTodos() {
+    function loadTodosToBrowser() {
         let todoListArr = loadTodoListFromLS()
         todoListArr.forEach((todo) => {
-            // here we need to add a ul
+            
             createTodoListElementTag(todo)
         });
     }
@@ -170,7 +168,7 @@ const todoListNameLocalStorage = "My Todo List";
         let li = createTodoItem(todo)    
         ul.appendChild(li)
     }
-        getTodos()
+        loadTodosToBrowser()
         document.getElementById('todo-button').addEventListener('click', handleSubmitTodo);
       })();
 
