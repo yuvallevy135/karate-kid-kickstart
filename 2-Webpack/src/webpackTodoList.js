@@ -1,4 +1,9 @@
-const todoListNameLocalStorage = "My Todo List";
+import {
+    loadTodoListFromLS,
+    updateTodoInLS,
+    removeTodoFromLocalStorage,
+    saveTodoToLocalStorage,
+    getTodoById} from './localStorage'
 
 (function() {
     const createCheck = (todo) => {
@@ -6,6 +11,7 @@ const todoListNameLocalStorage = "My Todo List";
         checkDiv.type = 'checkbox'
         const checkDivClassName = "checked"
         checkDiv.checked = todo.checked
+        checkDiv.id = 'checked'
         checkDiv.classList.add(checkDivClassName)
         checkDiv.addEventListener('click', function() {handleCheckedClick(todo.todoId)})
         return checkDiv
@@ -36,7 +42,6 @@ const todoListNameLocalStorage = "My Todo List";
                 iconClassName = "fa-check";
                 iconId = `icon-check-${id}`
             default:
-                
         }
         icon.className = iconClassName;
         icon.id = iconId
@@ -60,38 +65,35 @@ const todoListNameLocalStorage = "My Todo List";
     function handleCheckedClick(todoId) {
         const todo = document.getElementById(`todo-item-${todoId}`)
         todo.classList.toggle('completed')
-        let todos = loadTodoListFromLS()
-        const myTodo = todos.find(todo => todo.todoId === todoId)
-        todos.find(todo => todo.todoId === todoId).checked = !myTodo.checked;
-        localStorage.setItem(todoListNameLocalStorage, JSON.stringify(todos))
+        const isChecked = document.getElementById('checked').checked
+        const myTodo = getTodoById(todoId)
+        myTodo.checked = isChecked
+        updateTodoInLS(myTodo)        
     }
     
     function handleSubmitTodo(e) {
         e.preventDefault();
-    
         let input = document.getElementById('new-task-input');
-        if (input.value.trim() != '') {
-            
+        if (input.value.trim() != '') { 
             addTodo(input.value)
         }else {
             alert("You didnt enter any Todo")
         }
-        
         input.value = '';
     }
     
     function handleDeleteTodo(todoId) {
-        
         let li = document.getElementById(`todo-list-item-${todoId}`)
         removeTodoFromLocalStorage(todoId)
         li.remove()
     }
     
     function handleEditTodo(todoId){
-        let li = document.getElementById(`todo-list-item-${todoId}`)
         let todoItem = document.getElementById(`todo-item-${todoId}`)
-        editTodoToLocalStorage(todoId, todoItem)
-        todoItem.disabled = !todoItem.disabled
+        const myTodo = getTodoById(todoId)
+        myTodo.todoText = todoItem.value
+        updateTodoInLS(myTodo);
+        todoItem.disabled = !todoItem.disabled;
     }
     
     function createTodoItem(todo) {
@@ -120,52 +122,20 @@ const todoListNameLocalStorage = "My Todo List";
         const todoListArr = loadTodoListFromLS()
         const todoId = todoListArr.length
         const newTodo = {"todoText": todoText, "todoId": todoId, "checked": false}
-        
         createTodoListElementTag(newTodo)
         saveTodoToLocalStorage(newTodo)
-    }
-
-    function loadTodoListFromLS() {
-        let todoListArr = []
-        let todoListFromLocalStorage = localStorage.getItem(todoListNameLocalStorage);
-        if (todoListFromLocalStorage == null) {
-            todoListArr = []
-        } else {
-            todoListArr = JSON.parse(todoListFromLocalStorage);
-        }
-        return todoListArr
-    }
-
-    function saveTodoToLocalStorage(newTodo) {
-        let todos = loadTodoListFromLS()
-        todos.push(newTodo);
-        localStorage.setItem(todoListNameLocalStorage, JSON.stringify(todos))
-    }  
-
-    function removeTodoFromLocalStorage(todoId){
-        
-        let todos = loadTodoListFromLS()
-        todos = todos.filter(todo => todo.todoId != todoId)
-        localStorage.setItem(todoListNameLocalStorage, JSON.stringify(todos))
-    }
-
-    function editTodoToLocalStorage(todoId, todoItem){
-        let todos = loadTodoListFromLS()
-        todos.find(todo => todo.todoId === todoId).todoText = todoItem.value
-        localStorage.setItem(todoListNameLocalStorage, JSON.stringify(todos))
     }
 
     function loadTodosToBrowser() {
         let todoListArr = loadTodoListFromLS()
         todoListArr.forEach((todo) => {
-            
             createTodoListElementTag(todo)
         });
     }
 
     function createTodoListElementTag(todo){
         let ul = document.getElementById('todo-list');
-        let li = createTodoItem(todo)    
+        let li = createTodoItem(todo);
         ul.appendChild(li)
     }
         loadTodosToBrowser()
