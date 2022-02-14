@@ -5,15 +5,9 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "webpack",
-    "dev": "webpack serve"
+    "start": "webpack serve"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
   "devDependencies": {
-    "@babel/core": "^7.17.0",
-    "@babel/preset-env": "^7.16.11",
-    "babel-loader": "^8.2.3",
     "copy-webpack-plugin": "^10.2.4",
     "html-webpack-plugin": "^5.5.0",
     "webpack": "^5.68.0",
@@ -22,6 +16,7 @@
   },
   "dependencies": {
     "jss": "^10.9.0",
-    "jss-preset-default": "^10.9.0"
+    "jss-preset-default": "^10.9.0",
+    "uuid": "^8.3.2"
   }
 }

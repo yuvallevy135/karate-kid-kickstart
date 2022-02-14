@@ -1,23 +1,16 @@
-export const todoListNameLocalStorage = "My Todo List";
+export const todoListNameLocalStorage = "MyTodoList";
 
 function loadTodoListFromLS() {
-    let todoListArr = []
-    let todoListFromLocalStorage = localStorage.getItem(todoListNameLocalStorage);
-    if (todoListFromLocalStorage == null) {
-        todoListArr = []
-    } else {
-        todoListArr = JSON.parse(todoListFromLocalStorage);
-    }
+    const todoListArr = JSON.parse(localStorage.getItem(todoListNameLocalStorage)) || [];
     return todoListArr
 }
 
 function getTodoById(todoId){
-    let todos = loadTodoListFromLS();
-    return todos.find(todo => todo.todoId === todoId);
+    return loadTodoListFromLS().find(todo => todo.todoId === todoId);
 
 }
 function updateTodoInLS(myTodo){
-    let todos = loadTodoListFromLS()
+    const todos = loadTodoListFromLS()
     const todoIndex = todos.findIndex((todo => todo.todoId === myTodo.todoId));
     todos[todoIndex] = myTodo
     localStorage.setItem(todoListNameLocalStorage, JSON.stringify(todos))
@@ -29,7 +22,7 @@ function removeTodoFromLocalStorage(todoId){
     localStorage.setItem(todoListNameLocalStorage, JSON.stringify(todos))
 }
 function saveTodoToLocalStorage(newTodo) {
-    let todos = loadTodoListFromLS()
+    const todos = loadTodoListFromLS()
     todos.push(newTodo);
     localStorage.setItem(todoListNameLocalStorage, JSON.stringify(todos))
 }  

@@ -1,14 +1,16 @@
 import {
     loadTodoListFromLS,
-    updateTodoInLS,
-    removeTodoFromLocalStorage,
     saveTodoToLocalStorage,
-    getTodoById} from './localStorage'
+    } from './localStorage'
+import {
+    handleButtonClick,
+    handleCheckedClick
+} from './elementsHandlers'
 import {classes} from './stylesJSS'
-
+import {v4 as uuidv4} from 'uuid'
 (function() {
     const createCheck = (todo) => {
-        let checkDiv = document.createElement('input');
+        const checkDiv = document.createElement('input');
         checkDiv.type = 'checkbox'
         const checkDivClassName = "checked"
         checkDiv.checked = todo.checked
@@ -18,9 +20,9 @@ import {classes} from './stylesJSS'
         checkDiv.addEventListener('click', function() {handleCheckedClick(todo.todoId)})
         return checkDiv
     }
-    
+
     const createButton = (type, todoId) => {
-        let button = document.createElement('button');
+        const button = document.createElement('button');
         const buttonClassName = `${type}-button`
         button.classList.add(buttonClassName)
         button.appendChild(createIcon(type, todoId))
@@ -28,7 +30,7 @@ import {classes} from './stylesJSS'
         return button
     } 
     const createIcon = (type, id)  => {
-        let icon = document.createElement('i');
+        const icon = document.createElement('i');
         let iconClassName = ""
         let iconId = ``
         switch(type) {
@@ -49,33 +51,10 @@ import {classes} from './stylesJSS'
         icon.id = iconId
         return icon
     }
-    
-    
-    function handleButtonClick(type, todoId) {
-        switch(type) {
-            case 'delete':
-                handleDeleteTodo(todoId)
-                break;
-            case 'edit':
-                handleEditTodo(todoId)
-                break;
-            default:
-                
-        }
-    }   
-    
-    function handleCheckedClick(todoId) {
-        const todo = document.getElementById(`todo-item-${todoId}`)
-        todo.classList.toggle('completed')
-        const isChecked = document.getElementById('checked').checked
-        const myTodo = getTodoById(todoId)
-        myTodo.checked = isChecked
-        updateTodoInLS(myTodo)        
-    }
-    
+
     function handleSubmitTodo(e) {
         e.preventDefault();
-        let input = document.getElementById('new-task-input');
+        const input = document.getElementById('new-task-input');
         if (input.value.trim() != '') { 
             addTodo(input.value)
         }else {
@@ -83,35 +62,21 @@ import {classes} from './stylesJSS'
         }
         input.value = '';
     }
-    
-    function handleDeleteTodo(todoId) {
-        let li = document.getElementById(`todo-list-item-${todoId}`)
-        removeTodoFromLocalStorage(todoId)
-        li.remove()
-    }
-    
-    function handleEditTodo(todoId){
-        let todoItem = document.getElementById(`todo-item-${todoId}`)
-        const myTodo = getTodoById(todoId)
-        myTodo.todoText = todoItem.value
-        updateTodoInLS(myTodo);
-        todoItem.disabled = !todoItem.disabled;
-    }
-    
+
     function createTodoItem(todo) {
         const {todoText, todoId} = todo; 
-        let li = document.createElement('li')
-        let todoDiv = document.createElement('input');
+        const li = document.createElement('li')
+        const todoDiv = document.createElement('input');
         todoDiv.className = classes.todoItem
         todoDiv.classList.add('todo-item');
-        todoDiv.disabled = true
+        todo.checked ? todoDiv.classList.toggle(classes.completed) : ''
+        todoDiv.disabled = todo.checked ? true : false
         todoDiv.id = (`todo-item-${todoId}`)
         todoDiv.value = todoText
-        todo.checked ? todoDiv.classList.toggle('completed') : ''
         const deleteButton = createButton('delete', todoId)
         const editButton = createButton('edit', todoId)
         const checked = createCheck(todo);
-    
+
         li.appendChild(checked)
         li.appendChild(todoDiv)
         li.appendChild(deleteButton)
@@ -121,28 +86,27 @@ import {classes} from './stylesJSS'
         li.id = (`todo-list-item-${todoId}`)
         return li
     }
-    
+
     function addTodo(todoText) {
-        const todoListArr = loadTodoListFromLS()
-        const todoId = todoListArr.length
+        const todoId = uuidv4()
         const newTodo = {"todoText": todoText, "todoId": todoId, "checked": false}
         createTodoListElementTag(newTodo)
         saveTodoToLocalStorage(newTodo)
     }
 
     function loadTodosToBrowser() {
-        let todoListArr = loadTodoListFromLS()
+        const todoListArr = loadTodoListFromLS()
         todoListArr.forEach((todo) => {
             createTodoListElementTag(todo)
         });
     }
 
     function createTodoListElementTag(todo){
-        let ul = document.getElementById('todo-list');
-        let li = createTodoItem(todo);
+        const ul = document.getElementById('todo-list');
+        const li = createTodoItem(todo);
         ul.appendChild(li)
     }
-        loadTodosToBrowser()
-        document.getElementById('todo-button').addEventListener('click', handleSubmitTodo);
-      })();
+    loadTodosToBrowser()
+    document.getElementById('todo-button').addEventListener('click', handleSubmitTodo);
+})();
 
