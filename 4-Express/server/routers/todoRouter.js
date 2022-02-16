@@ -11,6 +11,6 @@ router.post('/', todoController.postTodo)
 
 router.delete('/:id', todoController.deleteTodo)
 
-router.put('/id', todoController.updateTodo)
+router.put('/:id', todoController.updateTodo)
 
 module.exports = router
