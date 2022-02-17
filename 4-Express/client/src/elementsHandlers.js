@@ -4,7 +4,7 @@ import {
     deleteTodo,
     updateTodo
 } from './utils/TodoApi'
-import {classes} from './stylesJSS'
+import {classes} from './styles/stylesJSS'
 
 function handleButtonClick(type, todoId) {
     switch(type) {

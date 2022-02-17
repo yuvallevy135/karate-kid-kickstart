@@ -1,63 +1,53 @@
-const axios = require('axios');
+import axios from 'axios'
+const url = "http://localhost:5000/api/todo/"
 
-// class TodoApi {
-//     constructor(){
-//         // this.url = url
-//         this.url = "http://localhost:5000/api/todo/"
-//     }
-this.url = "http://localhost:5000/api/todo/"
+const getTodoById = async (todoId) => {
+    return axios.get(`${url}${todoId}`)
+    .then(res => {
+        return res.data
+    })
+    .catch(err => {
+        console.log(err);
+    })
+}
 
-    const getTodoById = async (todoId) => {
-        try{
-            const res = await axios.get(`${this.url}${todoId}`)
-            console.log(res.data);
-            return res.data
-        } catch (err) {
-            console.log(err);
-        }
-    }
+const getAllTodos = async () => {
+    return axios.get(`${url}/allTodos`)
+    .then(res => {
+        return res.data
+    })
+    .catch(err => {
+        console.log(err);
+    })
+}
 
-    const getAllTodos = async() => {
-        try{
-            const res = await axios.get(`${this.url}/allTodos`)
-            console.log(res.data);
-            return res.data
-        } catch (err) {
-            console.log(err);
-        }
-    }
+const postTodo = async(todo) => {
+    return axios.post(`${url}`, todo)
+    .catch(err => {
+        console.log(err);
+    })
+}
 
-    const postTodo = async(todo) => {
-        try{
-            const res = await axios.post(`${this.url}`, todo)
-        } catch (err) {
-            console.log(err);
-        }
-    }
+const deleteTodo = async (todoId) => {
+    return axios.delete(`${url}${todoId}`)
+    .then(res => {
+        return res.data
+    })
+    .catch(err => {
+        console.log(err);
+    })
+}
 
-    const deleteTodo = async (todoId) => {
-        try{
-            const res = await axios.delete(`${this.url}${todoId}`)
-            console.log(res.data);
-            return res.data
-        } catch (err) {
-            console.log(err);
-        }
-    }
-
-    const updateTodo = async (todo) => {
-        try{
-            const res = await axios.put(`${this.url}${todo.todoId}`, todo)
-            console.log(res.data);
-            return res.data
-        } catch (err) {
-            console.log(err);
-        }
-    }
-
-// }
-
-module.exports = {
+const updateTodo = async (todo) => {
+    return axios.put(`${url}${todo.todoId}`, todo)
+    .then(res => {
+        return res.data
+    })
+    .catch(err => {
+        console.log(err);
+    })
+}
+export {
     getTodoById,
     getAllTodos,
     postTodo,

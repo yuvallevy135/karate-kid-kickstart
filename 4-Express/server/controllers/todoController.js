@@ -1,32 +1,37 @@
-const TodoModel = require('../models/todoModel')
+const {
+    modelGetTodoById,
+    modelGetAllTodos,
+    modelPostTodo,
+    modelDeleteTodo,
+    modelUpdateTodo} = require('../models/todoModel')
 
 
 const getTodoById = (req, res) => {
-    TodoModel.getTodoById(req.params.id, (todo) => {
+    modelGetTodoById(req.params.id, (todo) => {
         res.status(200).json(todo)
     });
 }
 const postTodo = (req, res) => {
-    TodoModel.postTodo(req.body, (todos) => {
-        res.status(201).send(todos);
+    modelPostTodo(req.body, () => {
+        res.sendStatus(201);
     })
 }
 
 const getAllTodos = (req, res) => {
-    TodoModel.getAllTodos(req, (todos) => {
+    modelGetAllTodos(req, (todos) => {
         console.log(todos);
         res.status(200).json(todos)
     })
 }
 
 const deleteTodo = (req, res) => {
-    TodoModel.deleteTodo(req.params.id, (todos) => {
-        res.status(200).json(todos)
+    modelDeleteTodo(req.params.id, () => {
+        res.sendStatus(200)
     });
 }
 const updateTodo = (req, res) => {
-    TodoModel.updateTodo(req.body, (todo) => {
-        res.status(200).json(todo)
+    modelUpdateTodo(req.body, () => {
+        res.sendStatus(200)
     })
 }
 

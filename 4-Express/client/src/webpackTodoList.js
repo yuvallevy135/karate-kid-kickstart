@@ -2,7 +2,7 @@ import {
     handleButtonClick,
     handleCheckedClick
 } from './elementsHandlers'
-import {classes} from './stylesJSS'
+import {classes} from './styles/stylesJSS'
 import {v4 as uuidv4} from 'uuid'
 import {
     getAllTodos,
@@ -25,6 +25,8 @@ import {
         const button = document.createElement('button');
         const buttonClassName = `${type}-button`
         button.classList.add(buttonClassName)
+        button.classList.add('button-style')
+        
         button.appendChild(createIcon(type, todoId))
         button.addEventListener('click', function() {handleButtonClick(type, todoId)})
         return button
@@ -63,8 +65,6 @@ import {
         input.value = '';
     }
 
-
-    
     function createTodoItem(todo) {
         const {todoText, todoId} = todo; 
         const li = document.createElement('li')
@@ -90,8 +90,8 @@ import {
     async function addTodo(todoText) {
         const todoId = uuidv4()
         const newTodo = {"todoText": todoText, "todoId": todoId, "checked": false}
-        createTodoListElementTag(newTodo)
         await postTodo(newTodo)
+        createTodoListElementTag(newTodo)
     }
 
     async function loadTodosToBrowser() {

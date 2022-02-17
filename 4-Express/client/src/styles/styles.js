@@ -1,9 +1,4 @@
-
-import jss from 'jss'
-import preset from 'jss-preset-default'
-jss.setup(preset())
-
-const styles = {
+export const styles = {
     todoListItem: {
         display: "flex",
         "flex-direction": "row",
@@ -29,4 +24,3 @@ const styles = {
     },
 
 }
-export const {classes} = jss.createStyleSheet(styles).attach()
