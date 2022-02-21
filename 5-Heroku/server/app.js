@@ -1,8 +1,21 @@
 const express = require('express');
 const todoRouter = require('./routers/todoRouter')
 const cors = require('cors')
+const connectDB = require('./database/connectionMogoose');
+const { default: mongoose } = require('mongoose');
+require('dotenv').config();
 const app = express();
-const port = 5000
+const port = process.env.PORT
+
+connectDB();
+const db = mongoose.connection;
+db.once('open', () => {
+    console.log('Connected to MongoDB');
+})
+
+db.on('error', (err) => {
+    console.log(err);
+})
 
 app.use(express.json())
 

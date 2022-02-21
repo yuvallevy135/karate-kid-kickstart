@@ -19,7 +19,6 @@ const postTodo = (req, res) => {
 
 const getAllTodos = (req, res) => {
     modelGetAllTodos(req, (todos) => {
-        console.log(todos);
         res.status(200).json(todos)
     })
 }
