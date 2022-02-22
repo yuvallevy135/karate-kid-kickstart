@@ -11,14 +11,20 @@ const todoScheme = new mongoose.Schema({
     checked: {
         type: Boolean,
         required: true
+    },
+    userId: {
+        type: String,
+        required: true
     }
 })
 
 const Todo = mongoose.model('Todo', todoScheme)
 
-const modelGetTodoById = async (todoId, res) => {
+const modelGetTodoById = async (req, res) => {
     try {
-        const todo = await Todo.findOne({'todoId': todoId}).lean(true);
+        const userId = req.cookies['user_id'];
+        const todoId = req.params.id
+        const todo = await Todo.where({userId: userId}).findOne({'todoId': todoId}).lean(true);
         const resTodo = {
             todoId: todo.todoId,
             todoText: todo.todoText,
@@ -31,28 +37,39 @@ const modelGetTodoById = async (todoId, res) => {
 }
 
 const modelGetAllTodos = async (req, res) => {
-    const todos = await Todo.find()
-    return res(todos);
+    try{
+        const userId = req.cookies['user_id'];
+        const todos = await Todo.where({userId: userId}).find()
+        return res(todos);
+    } catch (err) {
+        console.log(err);
+    }
 }
 
-const modelPostTodo = async (newTodo, res) => {
-    const todo = new Todo(newTodo)
+const modelPostTodo = async (req, res) => {
+    const userId = req.cookies['user_id'];
+    req.body.userId = userId
+    const todo = new Todo(req.body)
     await todo.save()
     return res()
 }
 
-const modelDeleteTodo = async (todoId, res) => {
+const modelDeleteTodo = async (req, res) => {
     try {
-        await Todo.findOneAndDelete({'todoId': todoId}).lean(true);
+        const todoId = req.params.id
+        const userId = req.cookies['user_id'];
+        await Todo.where({userId: userId}).findOneAndDelete({'todoId': todoId}).lean(true);
         return res();
     } catch (err) {
         res.status(404).send({ error: "Todo is not found!" })
     }
 }
 
-const modelUpdateTodo = async (updateTodo, res) => {
+const modelUpdateTodo = async (req, res) => {
     try {
-        await Todo.findOneAndUpdate({todoId: updateTodo.todoId}, updateTodo)
+        const userId = req.cookies['user_id'];
+        const updateTodo = req.body
+        await Todo.where({userId: userId}).findOneAndUpdate({todoId: updateTodo.todoId}, updateTodo)
         return res();
     } catch (err) {
         res.status(404).send({ error: "Todo is not found!" })

@@ -2,7 +2,7 @@ import axios from 'axios'
 const url = "http://localhost:5000/api/todo/"
 
 const getTodoById = async (todoId) => {
-    return axios.get(`${url}${todoId}`)
+    return axios.get(`${url}${todoId}`, {withCredentials: true})
     .then(res => {
         return res.data
     })
@@ -11,8 +11,8 @@ const getTodoById = async (todoId) => {
     })
 }
 
-const getAllTodos = async () => {
-    return axios.get(`${url}/allTodos`)
+const getAllTodos = async (userId) => {
+    return axios.get(`${url}/allTodos`,{withCredentials: true})
     .then(res => {
         return res.data
     })
@@ -22,14 +22,14 @@ const getAllTodos = async () => {
 }
 
 const postTodo = async(todo) => {
-    return axios.post(`${url}`, todo)
+    return axios.post(`${url}`, todo, {withCredentials: true})
     .catch(err => {
         console.log(err);
     })
 }
 
 const deleteTodo = async (todoId) => {
-    return axios.delete(`${url}${todoId}`)
+    return axios.delete(`${url}${todoId}`, {withCredentials: true})
     .then(res => {
         return res.data
     })
@@ -39,7 +39,7 @@ const deleteTodo = async (todoId) => {
 }
 
 const updateTodo = async (todo) => {
-    return axios.put(`${url}${todo.todoId}`, todo)
+    return axios.put(`${url}${todo.todoId}`, todo, {withCredentials: true})
     .then(res => {
         return res.data
     })
