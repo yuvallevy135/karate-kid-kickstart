@@ -1,5 +1,5 @@
 import axios from 'axios'
-const url = "http://localhost:5000/api/todo/"
+const url = `${process.env.TODO_SERVER_URL}/api/todo/`
 
 const getTodoById = async (todoId) => {
     return axios.get(`${url}${todoId}`, {withCredentials: true})

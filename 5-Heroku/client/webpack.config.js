@@ -2,7 +2,6 @@ const path = require('path')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const CopyPlugin = require('copy-webpack-plugin')
 module.exports = {
-    mode: 'production',
     entry: {
         main: path.resolve(__dirname, 'src/webpackTodoList.js')
     },
@@ -28,5 +27,5 @@ module.exports = {
             patterns: [
                 { from: path.resolve(__dirname, 'src/styles/*.css'), to: 'styles/[name].css' }            ]
         })
-    ],
+    ]
 };
