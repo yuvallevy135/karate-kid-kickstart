@@ -15,20 +15,17 @@ import {
         const checkDivClassName = "checked"
         checkDiv.checked = todo.checked
         checkDiv.id = `checked-${todo.todoId}`
-        checkDiv.className = classes.checked
-        checkDiv.classList.add(checkDivClassName)
-        checkDiv.addEventListener('click', function() {handleCheckedClick(todo.todoId)})
+        checkDiv.classList.add(classes.checked, checkDivClassName)
+        checkDiv.addEventListener('click', () => {handleCheckedClick(todo.todoId)})
         return checkDiv
     }
 
     const createButton = (type, todoId) => {
         const button = document.createElement('button');
         const buttonClassName = `${type}-button`
-        button.classList.add(buttonClassName)
-        button.classList.add('button-style')
-        
+        button.classList.add(buttonClassName, 'button-style')        
         button.appendChild(createIcon(type, todoId))
-        button.addEventListener('click', function() {handleButtonClick(type, todoId)})
+        button.addEventListener('click', () => {handleButtonClick(type, todoId)})
         return button
     } 
     const createIcon = (type, id)  => {
@@ -57,7 +54,7 @@ import {
     function handleSubmitTodo(e) {
         e.preventDefault();
         const input = document.getElementById('new-task-input');
-        if (input.value.trim() != '') { 
+        if (input.value.trim() !== '') { 
             addTodo(input.value)
         }else {
             alert("You didnt enter any Todo")
@@ -78,10 +75,7 @@ import {
         const editButton = createButton('edit', todoId)
         const checked = createCheck(todo);
 
-        li.appendChild(checked)
-        li.appendChild(todoDiv)
-        li.appendChild(deleteButton)
-        li.appendChild(editButton)
+        li.append(checked, todoDiv, deleteButton, editButton)
         li.className = classes.todoListItem
         li.id = (`todo-list-item-${todoId}`)
         return li

@@ -3,40 +3,40 @@ const {
     modelGetAllTodos,
     modelPostTodo,
     modelDeleteTodo,
-    modelUpdateTodo} = require('../models/todoModel');
-const {v4: uuidv4} =  require('uuid');
+    modelUpdateTodo} = require('../models/todoDAO');
 
-const getTodoById = (req, res) => {
-    modelGetTodoById(req, (todo) => {
-        res.status(200).json(todo)
-    });
+const getTodoById = async (req, res) => {
+    const userId = req.user_id;
+    const todoId = req.params.id
+    const todo = await modelGetTodoById(userId, todoId);
+    res.status(200).json(todo)
 }
-const postTodo = (req, res) => {
-    modelPostTodo(req, () => {
-        res.sendStatus(201);
-    })
-}
+const postTodo = async (req, res) => {
+    const userId = req.user_id;
+    modelPostTodo(req.body, userId);
+    res.sendStatus(201);
 
-const getAllTodos = (req, res) => {
-    const cookieId = req.cookies['user_id'];
-    if (!cookieId) {
-        const cookieId = uuidv4();
-        res.cookie('user_id', cookieId, {httpOnly: true, secure: false });
-    }
-    modelGetAllTodos(req, (todos) => {
-        res.status(200).json(todos)
-    })
 }
 
-const deleteTodo = (req, res) => {
-    modelDeleteTodo(req, () => {
-        res.sendStatus(200)
-    });
+const getAllTodos = async (req, res) => {
+    const userId = req.user_id;
+    const todos = await modelGetAllTodos(userId);
+    res.status(200).json(todos)
 }
-const updateTodo = (req, res) => {
-    modelUpdateTodo(req, () => {
-        res.sendStatus(200)
-    })
+
+const deleteTodo = async (req, res) => {
+    const todoId = req.params.id
+    const userId = req.user_id;
+    await modelDeleteTodo(todoId, userId)
+    res.sendStatus(200)
+
+}
+const updateTodo = async (req, res) => {
+    const userId = req.user_id;
+    const updateTodo = req.body
+    await modelUpdateTodo(userId, updateTodo)
+    res.sendStatus(200)
+
 }
 
 

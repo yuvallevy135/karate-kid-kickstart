@@ -15,6 +15,12 @@ module.exports = {
         port: 5001,
         open: true,
         hot: true,
+        proxy: {
+            '/todos': {
+              target: 'http://localhost:5000',
+              secure: false
+            }
+          }
     },
     
     plugins: [

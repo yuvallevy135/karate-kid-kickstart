@@ -1,20 +1,28 @@
 import axios from 'axios'
-const url = `${process.env.TODO_SERVER_URL}/api/todo/`
+const url = '/todos/'
 
 const getTodoById = async (todoId) => {
-    return axios.get(`${url}${todoId}`, {withCredentials: true})
+    return axios.get(`${url}${todoId}`)
     .then(res => {
-        return res.data
+        if (res.status != 200) {
+            alert(res.err)
+        } else {
+            return res.data
+        }
     })
     .catch(err => {
         console.log(err);
     })
 }
 
-const getAllTodos = async (userId) => {
-    return axios.get(`${url}/allTodos`,{withCredentials: true})
+const getAllTodos = async () => {
+    return axios.get(`${url}`)
     .then(res => {
-        return res.data
+        if (res.status != 200) {
+            alert(res.err)
+        } else {
+            return res.data
+        }
     })
     .catch(err => {
         console.log(err);
@@ -22,16 +30,25 @@ const getAllTodos = async (userId) => {
 }
 
 const postTodo = async(todo) => {
-    return axios.post(`${url}`, todo, {withCredentials: true})
+    return axios.post(`${url}`, todo)
+    .then(res => {
+        if (res.status != 201) {
+            alert(res.err)
+        }
+    })
     .catch(err => {
         console.log(err);
     })
 }
 
 const deleteTodo = async (todoId) => {
-    return axios.delete(`${url}${todoId}`, {withCredentials: true})
+    return axios.delete(`${url}${todoId}`)
     .then(res => {
-        return res.data
+        if (res.status != 200) {
+            alert(res.err)
+        } else {
+            return res.data
+        }
     })
     .catch(err => {
         console.log(err);
@@ -39,9 +56,13 @@ const deleteTodo = async (todoId) => {
 }
 
 const updateTodo = async (todo) => {
-    return axios.put(`${url}${todo.todoId}`, todo, {withCredentials: true})
+    return axios.put(`${url}${todo.todoId}`, todo)
     .then(res => {
-        return res.data
+        if (res.status != 200) {
+            alert(res.err)
+        } else {
+            return res.data
+        }
     })
     .catch(err => {
         console.log(err);
