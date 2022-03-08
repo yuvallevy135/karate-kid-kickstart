@@ -1,20 +1,20 @@
-import express from 'express'
-import {TodoController} from '../controllers/todoController'
-import { TodoDAOMongo } from '../models/TodoDAOMongo';
+import express from "express";
+import { TodoController } from "../controllers/todoController";
+import { TodoDAOMongo } from "../models/TodoDAOMongo";
 const router = express.Router();
 
 export const todoRouter = (db: TodoDAOMongo) => {
-  const todoController = new TodoController(db);
-  
-  router.get("/", todoController.getAllTodos);
+    const todoController = new TodoController(db);
 
-  router.get("/:id", todoController.getTodoById);
+    router.get("/", todoController.getAllTodos);
 
-  router.post("/", todoController.postTodo);
+    router.get("/:id", todoController.getTodoById);
 
-  router.delete("/:id", todoController.deleteTodo);
+    router.post("/", todoController.postTodo);
 
-  router.put("/:id", todoController.updateTodo);
+    router.delete("/:id", todoController.deleteTodo);
 
-  return router
+    router.put("/:id", todoController.updateTodo);
+
+    return router;
 };
