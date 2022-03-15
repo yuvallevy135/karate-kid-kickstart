@@ -7,6 +7,5 @@ export const checkCookie: RequestHandler = function (req, res, next) {
         const userId: string = uuid();
         res.cookie("userId", userId, { httpOnly: true, secure: true });
     }
-    req.body.userId = userId;
     next();
 };
