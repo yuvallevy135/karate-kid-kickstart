@@ -30,7 +30,12 @@ export class TodoController {
         res: Response<void | Error>
     ): Promise<void> => {
         const userId: string = req.cookies.userId;
-        const newTodo: ITodo = { ...req.body, userId };
+        const {
+            todoText,
+            todoId,
+            checked,
+        }: { todoText: string; todoId: string; checked: boolean } = req.body;
+        const newTodo: ITodo = { todoText, todoId, checked, userId };
         try {
             await this.db.modelPostTodo(newTodo);
             res.sendStatus(201);
@@ -49,8 +54,15 @@ export class TodoController {
         res: Response<ITodo[] | null | Error>
     ): Promise<void> => {
         const userId: string = req.cookies.userId;
-        const todos: ITodo[] | null = await this.db.modelGetAllTodos(userId);
-        res.status(200).json(todos);
+        try {
+            const todos: ITodo[] | null = await this.db.modelGetAllTodos(
+                userId
+            );
+            res.status(200).json(todos);
+        } catch (err) {
+            res.sendStatus(500);
+            return;
+        }
     };
 
     deleteTodo = async (
@@ -74,7 +86,12 @@ export class TodoController {
         res: Response<void>
     ): Promise<void> => {
         const userId: string = req.cookies.userId;
-        const updateTodo: ITodo = { ...req.body, userId };
+        const {
+            todoText,
+            todoId,
+            checked,
+        }: { todoText: string; todoId: string; checked: boolean } = req.body;
+        const updateTodo: ITodo = { todoText, todoId, checked, userId };
         const todo: ITodo | null = await this.db.modelUpdateTodo(updateTodo);
         if (todo == null) {
             res.sendStatus(404);

@@ -6,7 +6,7 @@ const testKit = new TestKit();
 describe("DELETE todo by id /api/todos/:id ", () => {
     testKit.beforeAndAfter();
 
-    it("given no id of todo in db should return 404", async () => {
+    it("should return 404, given no id of todo in db", async () => {
         let todo: ITodo = createTodo();
         await testKit.mongoDriver.modelPostTodo(todo);
         testKit.appDriver.setUserId(todo.userId);
@@ -21,7 +21,7 @@ describe("DELETE todo by id /api/todos/:id ", () => {
         }
     });
 
-    it("given todo with to delete that in db should return 200", async () => {
+    it("should return 200, given todo with to delete that in db", async () => {
         let todo: ITodo = createTodo();
         await testKit.mongoDriver.modelPostTodo(todo);
         testKit.appDriver.setUserId(todo.userId);

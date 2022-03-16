@@ -6,7 +6,7 @@ describe("GET all todos /api/todos/ ", () => {
     const testKit = new TestKit();
     testKit.beforeAndAfter();
 
-    it("given no todos in database should return empty array and status 200", async () => {
+    it("return empty array and status 200, given no todos in database should", async () => {
         const userId: string = createUserId();
         testKit.appDriver.setUserId(userId);
 
@@ -15,7 +15,7 @@ describe("GET all todos /api/todos/ ", () => {
         expect(response.data).toEqual([]);
     });
 
-    it("given todos in db should return array of todos and status 200", async () => {
+    it("should return array of todos and status 200, given todos in db", async () => {
         const todos: ITodo[] = times(3, () => createTodo());
         await Promise.all(
             todos.map((todo) => testKit.mongoDriver.modelPostTodo(todo))

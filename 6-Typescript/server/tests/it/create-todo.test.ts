@@ -6,7 +6,7 @@ describe("POST new todo /api/todos ", () => {
     const testKit = new TestKit();
     testKit.beforeAndAfter();
 
-    it("given new todo to create should return 201 and that todo is equal to the one we inserted", async () => {
+    it("should return 201 and that todo is equal to the one we inserted, given new todo to create", async () => {
         const todo: ITodo = createTodo();
         testKit.appDriver.setUserId(todo.userId);
 
@@ -20,7 +20,7 @@ describe("POST new todo /api/todos ", () => {
         expect(response.status).toBe(201);
     });
 
-    it("given todo with missing value in payload should return 400", async () => {
+    it("should return 400, given todo with missing value in payload", async () => {
         const todo: Partial<ITodo> = createTodoWithMissingChecked();
         testKit.appDriver.setUserId(todo.userId);
 

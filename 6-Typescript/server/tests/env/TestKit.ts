@@ -13,7 +13,7 @@ export class TestKit {
         this.mongoDriver = new TodoDAOMongoDriverTest();
     }
     beforeEach = async () => {
-        const port: number | undefined = generatePort();
+        const port: number = generatePort();
         this.appDriver = new AppDriver(
             `${process.env.HOST}:${port}/api/todos/`
         );

@@ -7,7 +7,7 @@ const testKit = new TestKit();
 describe("GET todo by id /api/todos/:id ", () => {
     testKit.beforeAndAfter();
 
-    it("given no id of todo in db should return 404", async () => {
+    it("should return 404, given no id of todo in db", async () => {
         const todo: ITodo = createTodo();
         await testKit.mongoDriver.modelPostTodo(todo);
         const userId: string = todo.userId;
@@ -20,7 +20,7 @@ describe("GET todo by id /api/todos/:id ", () => {
         }
     });
 
-    it("given todo with id in db should return the todo and status 200", async () => {
+    it("should return the todo and status 200, given todo with id in db", async () => {
         const todos: ITodo[] = times(3, () => createTodo());
         await Promise.all(
             todos.map((todo) => testKit.mongoDriver.modelPostTodo(todo))

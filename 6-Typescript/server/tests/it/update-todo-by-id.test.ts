@@ -20,7 +20,7 @@ describe("PUT todo by id /api/todos/:id ", () => {
         }
     });
 
-    it("given todo with id to update in db should return 200", async () => {
+    it("should return 200, given todo with id to update in db", async () => {
         let todo: ITodo = createTodo();
         await testKit.mongoDriver.modelPostTodo(todo);
         testKit.appDriver.setUserId(todo.userId);
