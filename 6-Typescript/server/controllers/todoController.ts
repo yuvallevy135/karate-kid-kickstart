@@ -51,13 +51,11 @@ export class TodoController {
 
     getAllTodos = async (
         req: Request<void>,
-        res: Response<ITodo[] | null | Error>
+        res: Response<ITodo[] | Error>
     ): Promise<void> => {
         const userId: string = req.cookies.userId;
         try {
-            const todos: ITodo[] | null = await this.db.modelGetAllTodos(
-                userId
-            );
+            const todos: ITodo[] = await this.db.modelGetAllTodos(userId);
             res.status(200).json(todos);
         } catch (err) {
             res.sendStatus(500);

@@ -48,11 +48,13 @@ export class TodoDAODataAPI implements ITodoService {
             .lean(true);
     };
 
-    modelGetAllTodos = async (userId: string): Promise<ITodo[] | null> => {
-        return await this.Todo.find(
+    modelGetAllTodos = async (userId: string): Promise<ITodo[]> => {
+        const res = await this.Todo.find(
             { userId },
             { todoText: 1, todoId: 1, checked: 1, userId: 1, _id: 0 }
         );
+
+        return res !== null ? res : [];
     };
 
     modelPostTodo = async (newTodo: ITodo): Promise<ITodo | null | Error> => {
